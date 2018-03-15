@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
+    }
+}
+
+plugins {
+    id "java"
+    id "groovy"
+    id "com.palantir.jacoco-coverage" version "0.4.0"
+    id "maven"
+    id "com.github.johnrengelman.shadow" version '2.0.2'
+}
+
+group 'transaction-generator'
+version ''
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+artifacts {
+    archives shadowJar
+}
+
+dependencies {
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.2'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.8.9'
+}
+
+test {
+    reports {
+        junitXml.enabled = false
+        html.enabled = true
+    }
+}
+
+jar {
+    manifest {
+        attributes (
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'classes.Main'
+        )
+    }
+}
