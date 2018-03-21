@@ -50,3 +50,11 @@ Parametry:
 - eventsCount: ilość transakcji (pojedynczych plików) do wygenerowania. Domyślnie 100.
 
 - outDir: katalog, do którego mają być zapisane pliki. Domyślnie aktualny katalog roboczy.
+
+W aplikacji istnieje logowanie z wykorzystaniem Logbacka.
+
+Logowanie na konsolę jest sformatowane JSonem.
+
+Logowanie do pliku to tekst, z datą/godziną, wątkiem, poziomem logowania oraz wiadomością. Logi są zapisywane w folderze logs.
+
+Plik jest "rolowany" co 10MB. Poprzedni plik jest zarchiwizowany z dopisaniem daty/godziny.
