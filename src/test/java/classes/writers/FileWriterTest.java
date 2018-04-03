@@ -1,6 +1,9 @@
-package classes.generators;
+package classes.writers;
 
 import classes.file_factories.FileWriterFactory;
+import classes.generators.Item;
+import classes.generators.Transaction;
+import classes.input_parameters.FileFormat;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,7 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TransactionWriterTest {
+public class FileWriterTest {
 
     @Test
     public void shouldSuccessfullySave() {
@@ -30,13 +33,14 @@ public class TransactionWriterTest {
             assertTrue("IOException shouldn't be thrown", false);
         }
 
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
         Transaction transaction = new Transaction(1, 1, ZonedDateTime.now(),
                 Arrays.asList(new Item("p1", 1, BigDecimal.valueOf(1))));
 
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get(""), mock);
+        FileWriter fileWriter = new FileWriter(Paths.get(""), mock, fileFormatWriter);
 
         // when
-        transactionWriter.write(transaction);
+        fileWriter.write(transaction);
 
         // then
         assertEquals(true, testWriter.successfulWrite);
@@ -52,15 +56,15 @@ public class TransactionWriterTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
         Transaction transaction = new Transaction(1, 1, ZonedDateTime.now(),
                 Arrays.asList(new Item("p1", 1, BigDecimal.valueOf(1))));
 
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get(""), mock);
+        FileWriter fileWriter = new FileWriter(Paths.get(""), mock, fileFormatWriter);
 
         try {
             // when
-            transactionWriter.write(transaction);
+            fileWriter.write(transaction);
 
             // then
             assertTrue("FileWriteException should be thrown", false);
@@ -68,6 +72,7 @@ public class TransactionWriterTest {
             assertTrue("FileWriteException should be thrown", true);
         }
     }
+
     @Test
     public void shouldThrowExceptionOnWriteAndClose() {
         // given
@@ -78,15 +83,16 @@ public class TransactionWriterTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
 
         Transaction transaction = new Transaction(1, 1, ZonedDateTime.now(),
                 Arrays.asList(new Item("p1", 1, BigDecimal.valueOf(1))));
 
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get(""), mock);
+        FileWriter fileWriter = new FileWriter(Paths.get(""), mock, fileFormatWriter);
 
         try {
             // when
-            transactionWriter.write(transaction);
+            fileWriter.write(transaction);
 
             // then
             assertTrue("FileWriteException should be thrown", false);
@@ -94,25 +100,27 @@ public class TransactionWriterTest {
             assertTrue("FileWriteException should be thrown", true);
         }
     }
+
     @Test
     public void shouldThrowExceptionOnClose() {
         // given
         FileWriterFactory mock = mock(FileWriterFactory.class);
-        TestWriter testWriter = new TestWriter(false,true);
+        TestWriter testWriter = new TestWriter(false, true);
         try {
             when(mock.getFileWriter(any(Path.class))).thenReturn(testWriter);
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
 
         Transaction transaction = new Transaction(1, 1, ZonedDateTime.now(),
                 Arrays.asList(new Item("p1", 1, BigDecimal.valueOf(1))));
 
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get(""), mock);
+        FileWriter fileWriter = new FileWriter(Paths.get(""), mock, fileFormatWriter);
 
         try {
             // when
-            transactionWriter.write(transaction);
+            fileWriter.write(transaction);
 
             // then
             assertTrue("FileWriteException should be thrown", false);
@@ -142,7 +150,8 @@ public class TransactionWriterTest {
         }
 
         @Override
-        public void flush() throws IOException {}
+        public void flush() throws IOException {
+        }
 
         @Override
         public void close() throws IOException {
@@ -151,8 +160,4 @@ public class TransactionWriterTest {
             }
         }
     }
-
-
 }
-
-

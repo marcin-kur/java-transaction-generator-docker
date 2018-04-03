@@ -1,7 +1,10 @@
 package classes.generators;
 
+import lombok.Getter;
+
 import java.time.ZonedDateTime;
 
+@Getter
 public class TimestampRange {
     private final ZonedDateTime lowerLimit;
     private final ZonedDateTime upperLimit;
@@ -9,13 +12,5 @@ public class TimestampRange {
     public TimestampRange(ZonedDateTime lowerLimit, ZonedDateTime upperLimit) {
         this.lowerLimit = lowerLimit;
         this.upperLimit = upperLimit;
-    }
-
-    public ZonedDateTime getLowerLimit() {
-        return lowerLimit;
-    }
-
-    public ZonedDateTime getUpperLimit() {
-        return upperLimit;
     }
 }

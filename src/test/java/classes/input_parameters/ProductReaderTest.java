@@ -3,9 +3,7 @@ package classes.input_parameters;
 import classes.file_factories.FileReaderFactory;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,7 +14,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ProductParserTest {
+public class ProductReaderTest {
     @Test
     public void shouldReadThreeProductsFromFile() {
         // given
@@ -32,10 +30,10 @@ public class ProductParserTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
         //when
-        ArrayList<Product> products = productsParser.readProducts(path);
+        ArrayList<Product> products = productsReader.readProducts(path);
 
         //then
         assertEquals(3, products.size());
@@ -55,13 +53,17 @@ public class ProductParserTest {
             assertTrue("IOException shouldn't be thrown", false);
         }
 
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
-        //when
-        ArrayList<Product> products = productsParser.readProducts(path);
+        try {
+            //when
+            productsReader.readProducts(path);
 
-        //then
-        assertEquals(0, products.size());
+            //then
+            assertTrue("InputParsException should be thrown", false);
+        } catch (InputParseException e) {
+            assertTrue("InputParsException should be thrown", true);
+        }
     }
 
     @Test
@@ -77,35 +79,35 @@ public class ProductParserTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
         try {
             //when
-            productsParser.readProducts(path);
+            productsReader.readProducts(path);
 
             //then
-            assertTrue("InputParsException should be thrown" , false);
-        }catch (InputParseException e) {
-            assertTrue("InputParsException should be thrown" , true);
+            assertTrue("InputParsException should be thrown", false);
+        } catch (InputParseException e) {
+            assertTrue("InputParsException should be thrown", true);
         }
     }
 
     @Test
-    public void shouldThrowInputParseExceptionWhenFileIsNull() {
+    public void shouldThrowInputParseExceptionWhenFileIsEmpty() {
         // given
         Path path = Paths.get("someDummyValue");
         FileReaderFactory mock = mock(FileReaderFactory.class);
         try {
-            when(mock.getFileLines(path)).then(i -> null);
+            when(mock.getFileLines(path)).then(i -> "");
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
 
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
         //when
         try {
-            ArrayList<Product> products = productsParser.readProducts(path);
+            ArrayList<Product> products = productsReader.readProducts(path);
 
             //then
             assertTrue("InputParseException should be thrown", false);
@@ -115,7 +117,7 @@ public class ProductParserTest {
     }
 
     @Test
-    public void shouldReadZeroProductsWhenFileIsEmpty() {
+    public void shouldThrowExceptionWhenFileHasOnlyHeader() {
         // given
         Path path = Paths.get("someDummyV2alue");
         FileReaderFactory mock = mock(FileReaderFactory.class);
@@ -126,17 +128,21 @@ public class ProductParserTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
-        //when
-        ArrayList<Product> products = productsParser.readProducts(path);
+        try {
+            //when
+            ArrayList<Product> products = productsReader.readProducts(path);
 
-        //then
-        assertEquals(0, products.size());
+            // then
+            assertTrue("InputParseException should be thrown", false);
+        } catch (InputParseException e) {
+            assertTrue("InputParseException should be thrown", true);
+        }
     }
 
     @Test
-    public void shouldReadZeroProductsWhenPriceIsEmpty() {
+    public void shouldThrowExceptionWhenPriceIsEmpty() {
         // given
         Path path = Paths.get("someDummyValue");
         FileReaderFactory mock = mock(FileReaderFactory.class);
@@ -148,13 +154,17 @@ public class ProductParserTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
-        //when
-        ArrayList<Product> products = productsParser.readProducts(path);
+        try {
+            //when
+            productsReader.readProducts(path);
 
-        //then
-        assertEquals(0, products.size());
+            //then
+            assertTrue("InputParsException should be thrown", false);
+        } catch (InputParseException e) {
+            assertTrue("InputParsException should be thrown", true);
+        }
     }
 
     @Test
@@ -174,10 +184,10 @@ public class ProductParserTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-        ProductsParser productsParser = new ProductsParser(mock);
+        ProductsReader productsReader = new ProductsReader(mock);
 
         //when
-        ArrayList<Product> products = productsParser.readProducts(path);
+        ArrayList<Product> products = productsReader.readProducts(path);
 
         //then
         assertEquals(3, products.size());

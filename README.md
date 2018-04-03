@@ -1,6 +1,6 @@
-<h1>Zadanie 4 - Generator transakcji</h1>
+<h1>Generator transakcji</h1>
 
-Generator "transakcji" - plików JSON, generuje transakcje wg wzoru:
+Generator "transakcji" - plików JSON, XML lub yaml, generuje transakcje wg wzoru:
 
 {
   "id": 1,
@@ -21,7 +21,7 @@ Generator "transakcji" - plików JSON, generuje transakcje wg wzoru:
   "sum": 4.5
 }
 
-Każda transakcja jest zapisywana do odzielnego pliku w formacie "transaction_nrTransakcji.json". 
+Każda transakcja jest zapisywana do odzielnego pliku w formacie "transaction_nrTransakcji". 
 
 Build projektu(shadow jar build/libs/transaction-generator-all.jar):
 
@@ -33,7 +33,7 @@ Zainstalwanie w lokalnym repozytorium:
 
 Przykładowe wywołanie:
 
-- java -jar transaction-generator-all.jar -customerIds 1:20 -dateRange "2018-03-08T00:00:00.000-0100":"2018-03-08T23:59:59.999-0100" -itemsFile items.csv -itemsCount 5:15 -itemsQuantity 1:30 -eventsCount 1000 -outDir ./output
+- java -jar transaction-generator-all.jar -customerIds 1:20 -dateRange "2018-03-08T00:00:00.000-0100":"2018-03-08T23:59:59.999-0100" -itemsFile items.csv -itemsCount 5:15 -itemsQuantity 1:30 -eventsCount 1000 -outDir ./output -format=xml
 
 Parametry:
 
@@ -50,6 +50,8 @@ Parametry:
 - eventsCount: ilość transakcji (pojedynczych plików) do wygenerowania. Domyślnie 100.
 
 - outDir: katalog, do którego mają być zapisane pliki. Domyślnie aktualny katalog roboczy.
+
+- format: format serializacji danych: json, xml lub yaml. Domyślnie json
 
 W aplikacji istnieje logowanie z wykorzystaniem Logbacka.
 

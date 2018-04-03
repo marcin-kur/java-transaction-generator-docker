@@ -1,17 +1,16 @@
 package classes.input_parameters;
 
-import classes.command_lines.CommandLineArgs;
+import classes.command_line.CommandLineArgs;
 import classes.generators.IntegerRange;
 import classes.generators.TimestampRange;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Optional;
 
+@Slf4j
 public class InputParametersCreator {
-
-    private static Logger logger = LoggerFactory.getLogger(InputParametersCreator.class);
 
     private final InputIntegerParser integerParser;
     private final InputIntegerRangeParser integerRangeParser;
@@ -26,7 +25,7 @@ public class InputParametersCreator {
     }
 
     public InputParameters create(CommandLineArgs commandLineArgs) {
-        logger.info("Input Parameters creation started. CommandLineArgs: " + commandLineArgs);
+        log.info("Input Parameters creation started.", commandLineArgs);
         InputParametersBuilder inputParametersBuilder = new InputParametersBuilder();
 
         setCustomerIds(inputParametersBuilder, commandLineArgs.getCustomerIds());
@@ -36,6 +35,7 @@ public class InputParametersCreator {
         setItemsQuantity(inputParametersBuilder, commandLineArgs.getItemsQuantity());
         setEventsCount(inputParametersBuilder, commandLineArgs.getEventsCount());
         setOutDir(inputParametersBuilder, commandLineArgs.getOutDir());
+        setOutFormat(inputParametersBuilder, commandLineArgs.getFormat());
 
         return inputParametersBuilder.createInputParameters();
     }
@@ -45,7 +45,7 @@ public class InputParametersCreator {
             IntegerRange integerRange = integerRangeParser.parse(getParamValue(customerIds));
             inputParametersBuilder.setCustomerIds(integerRange);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Customer Ids: " + e.getMessage());
+            log.warn("Exception during parsing Customer Ids. ", e);
         }
     }
 
@@ -54,7 +54,7 @@ public class InputParametersCreator {
             TimestampRange timestampRange = timestampParser.parse(getParamValue(dateRange));
             inputParametersBuilder.setDateRange(timestampRange);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Date Range: " + e.getMessage());
+            log.warn("Exception during parsing Date Range: ", e);
         }
     }
 
@@ -63,8 +63,8 @@ public class InputParametersCreator {
             Path path = pathParser.parseFile(getParamValue(itemsFile));
             inputParametersBuilder.setItemsFile(path);
         } catch (InputParseException e) {
-            logger.error("Exception during parsing Items File: " + e.getMessage());
-            throw new InputParseException("Exception during parsing Items File: " + e.getMessage());
+            log.error("Exception during parsing Items File: ", e);
+            throw new InputParseException("Exception during parsing Items File: ", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class InputParametersCreator {
             IntegerRange integerRange = integerRangeParser.parse(getParamValue(itemsCount));
             inputParametersBuilder.setItemsCount(integerRange);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Items Count: " + e.getMessage());
+            log.warn("Exception during parsing Items Count: ", e);
         }
     }
 
@@ -82,7 +82,7 @@ public class InputParametersCreator {
             IntegerRange integerRange = integerRangeParser.parse(getParamValue(itemsQuantity));
             inputParametersBuilder.setItemsQuantity(integerRange);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Items Quantity: " + e.getMessage());
+            log.warn("Exception during parsing Items Quantity: ", e);
         }
     }
 
@@ -91,7 +91,7 @@ public class InputParametersCreator {
             int intValue = integerParser.parse(getParamValue(eventsCount));
             inputParametersBuilder.setEventsCount(intValue);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Event Count: " + e.getMessage());
+            log.warn("Exception during parsing Event Count: ", e);
         }
     }
 
@@ -100,7 +100,17 @@ public class InputParametersCreator {
             Path path = pathParser.parseDirectory(getParamValue(outDir));
             inputParametersBuilder.setOutDir(path);
         } catch (InputParseException e) {
-            logger.warn("Exception during parsing Out Directory: " + e.getMessage());
+            log.warn("Exception during parsing Output Directory: ", e);
+        }
+    }
+
+    private void setOutFormat(InputParametersBuilder inputParametersBuilder, String outFormat) {
+        Optional<FileFormat> fileFormat = Arrays.stream(FileFormat.values())
+                .filter(f -> f.name().equalsIgnoreCase(outFormat)).findAny();
+        if (fileFormat.isPresent()) {
+            inputParametersBuilder.setOutFormat(fileFormat.get());
+        } else {
+            log.warn("Invalid Output Format");
         }
     }
 

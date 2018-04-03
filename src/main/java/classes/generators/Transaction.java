@@ -1,15 +1,19 @@
 package classes.generators;
 
-import com.google.gson.annotations.SerializedName;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@Getter
+@ToString
 public class Transaction {
     public int id;
 
-    @SerializedName("customer_id")
+    @JsonProperty("customer_id")
     private int customerId;
 
     private ZonedDateTime timestamp;
@@ -26,33 +30,10 @@ public class Transaction {
         this.sum = calculateSum();
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
     private BigDecimal calculateSum() {
         return items
                 .stream()
                 .map(item -> item.getTotalPrice())
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "id=" + id +
-                ", customerId=" + customerId +
-                ", timestamp=" + timestamp +
-                ", items=" + items +
-                ", sum=" + sum +
-                '}';
     }
 }

@@ -2,15 +2,14 @@ package classes.input_parameters;
 
 import classes.generators.IntegerRange;
 import classes.generators.TimestampRange;
+import lombok.Setter;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
 
+@Setter
 public class InputParametersBuilder {
 
     private IntegerRange customerIds = new IntegerRange(1, 20);
@@ -20,34 +19,7 @@ public class InputParametersBuilder {
     private IntegerRange itemsQuantity = new IntegerRange(1, 20);
     private int eventsCount = 100;
     private Path outDir = Paths.get("");
-
-    public void setCustomerIds(IntegerRange customerIds) {
-        this.customerIds = customerIds;
-    }
-
-    public void setDateRange(TimestampRange dateRange) {
-        this.dateRange = dateRange;
-    }
-
-    public void setItemsFile(Path itemsFile) {
-        this.itemsFile = itemsFile;
-    }
-
-    public void setItemsCount(IntegerRange itemsCount) {
-        this.itemsCount = itemsCount;
-    }
-
-    public void setItemsQuantity(IntegerRange itemsQuantity) {
-        this.itemsQuantity = itemsQuantity;
-    }
-
-    public void setEventsCount(int eventsCount) {
-        this.eventsCount = eventsCount;
-    }
-
-    public void setOutDir(Path outDir) {
-        this.outDir = outDir;
-    }
+    private FileFormat outFormat = FileFormat.JSON;
 
     public InputParameters createInputParameters() {
         return new InputParameters(
@@ -57,13 +29,15 @@ public class InputParametersBuilder {
                 itemsCount,
                 itemsQuantity,
                 eventsCount,
-                outDir
+                outDir,
+                outFormat
         );
     }
 
     private TimestampRange defaultDateRange() {
-        ZonedDateTime beginOfToday = ZonedDateTime.of(LocalDate.now(ZoneId.systemDefault()), LocalTime.MIDNIGHT, ZoneId.systemDefault());
-        ZonedDateTime endOfToday = beginOfToday.plusDays(1).minus(1, ChronoUnit.MILLIS);
-        return new TimestampRange(beginOfToday, endOfToday);
+        return new TimestampRange(
+                ZonedDateTime.now().with(LocalTime.MIN),
+                ZonedDateTime.now().with(LocalTime.MAX)
+        );
     }
 }

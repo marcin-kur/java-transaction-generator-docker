@@ -1,7 +1,12 @@
 package classes.generators;
 
+import lombok.Getter;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 
+@Getter
+@ToString
 public class Item {
     private final String name;
     private final int quantity;
@@ -13,24 +18,8 @@ public class Item {
         this.price = price;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
     public BigDecimal getTotalPrice() {
         return getPrice().multiply(BigDecimal.valueOf(getQuantity()));
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "name='" + name + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
-                '}';
-    }
 }

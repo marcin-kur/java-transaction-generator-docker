@@ -2,9 +2,13 @@ package classes.input_parameters;
 
 import classes.generators.IntegerRange;
 import classes.generators.TimestampRange;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.nio.file.Path;
 
+@ToString
+@Getter
 public class InputParameters {
 
     private final IntegerRange customerIds;
@@ -14,8 +18,9 @@ public class InputParameters {
     private final IntegerRange itemsQuantity;
     private final int eventsCount;
     private final Path outDir;
+    private final FileFormat outFormat;
 
-    public InputParameters(IntegerRange customerIds, TimestampRange dateRange, Path itemsFile, IntegerRange itemsCount, IntegerRange itemsQuantity, int eventsCount, Path outDir) {
+    public InputParameters(IntegerRange customerIds, TimestampRange dateRange, Path itemsFile, IntegerRange itemsCount, IntegerRange itemsQuantity, int eventsCount, Path outDir, FileFormat outFormat) {
         this.customerIds = customerIds;
         this.dateRange = dateRange;
         this.itemsFile = itemsFile;
@@ -23,33 +28,6 @@ public class InputParameters {
         this.itemsQuantity = itemsQuantity;
         this.eventsCount = eventsCount;
         this.outDir = outDir;
-    }
-
-    public IntegerRange getCustomerIds() {
-        return customerIds;
-    }
-
-    public TimestampRange getDateRange() {
-        return dateRange;
-    }
-
-    public Path getItemsFile() {
-        return itemsFile;
-    }
-
-    public IntegerRange getItemsCount() {
-        return itemsCount;
-    }
-
-    public IntegerRange getItemsQuantity() {
-        return itemsQuantity;
-    }
-
-    public int getEventsCount() {
-        return eventsCount;
-    }
-
-    public Path getOutDir() {
-        return outDir;
+        this.outFormat = outFormat;
     }
 }

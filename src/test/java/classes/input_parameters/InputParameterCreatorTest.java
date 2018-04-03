@@ -1,7 +1,7 @@
 package classes.input_parameters;
 
 import classes.TestUtils;
-import classes.command_lines.CommandLineArgs;
+import classes.command_line.CommandLineArgs;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -29,7 +29,8 @@ public class InputParameterCreatorTest {
                 "5:10",
                 "1:5",
                 "10",
-                "./output");
+                "./output",
+                "XML");
 
         InputPathParser pathParser = mock(InputPathParser.class);
         when(pathParser.validateFile(any(Path.class))).thenReturn(true);
@@ -68,6 +69,8 @@ public class InputParameterCreatorTest {
             assertEquals(inputParameters.getEventsCount(), 10);
 
             assertEquals(inputParameters.getOutDir(), Paths.get("./output"));
+
+            assertEquals(inputParameters.getOutFormat(), FileFormat.XML);
         } catch (InputParseException e) {
             assertTrue("InputParseException shouldn't be thrown:" + e.getMessage(), false);
         }
@@ -80,6 +83,7 @@ public class InputParameterCreatorTest {
                 null,
                 null,
                 "items.csv",
+                null,
                 null,
                 null,
                 null,
@@ -120,7 +124,8 @@ public class InputParameterCreatorTest {
                 "a:b",
                 "a:b",
                 "a",
-                "./abcd");
+                "./abcd",
+                "ABC");
 
         InputPathParser pathParser = mock(InputPathParser.class);
         when(pathParser.validateFile(any(Path.class))).thenReturn(true);
@@ -151,6 +156,7 @@ public class InputParameterCreatorTest {
     public void shouldThrowExceptionWhenItemsFileIsEmpty() {
         // given
         CommandLineArgs commandLineArgs = new CommandLineArgs(
+                null,
                 null,
                 null,
                 null,
@@ -202,5 +208,8 @@ public class InputParameterCreatorTest {
         assertEquals(inputParameters.getEventsCount(), 100);
 
         assertEquals(inputParameters.getOutDir(), Paths.get(""));
+
+        assertEquals(inputParameters.getOutFormat(), FileFormat.JSON);
+
     }
 }

@@ -2,7 +2,11 @@ package classes.generators;
 
 import classes.TestUtils;
 import classes.file_factories.FileWriterFactory;
+import classes.input_parameters.FileFormat;
 import classes.input_parameters.Product;
+import classes.writers.FileFormatWriter;
+import classes.writers.FileWriteException;
+import classes.writers.FileWriter;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -38,6 +42,7 @@ public class TransactionGeneratorHandlerTest {
         TimestampGenerator timestampGenerator = new TimestampGenerator(new TimestampRange(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
 
         TransactionGenerator transactionGenerator = new TransactionGenerator(customerIdGenerator, timestampGenerator, itemsGenerator);
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
 
         FileWriterFactory mock = mock(FileWriterFactory.class);
         TestWriter testWriter = new TestWriter(false);
@@ -47,8 +52,8 @@ public class TransactionGeneratorHandlerTest {
             assertTrue("IOException shouldn't be thrown", false);
         }
 
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get("/"), mock);
-        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, transactionWriter, 100);
+        FileWriter fileWriter = new FileWriter(Paths.get("/"), mock, fileFormatWriter);
+        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, fileWriter, 100);
 
         // when
         transactionsGeneratorHandler.handle();
@@ -72,6 +77,7 @@ public class TransactionGeneratorHandlerTest {
         TimestampGenerator timestampGenerator = new TimestampGenerator(new TimestampRange(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
 
         TransactionGenerator transactionGenerator = new TransactionGenerator(customerIdGenerator, timestampGenerator, itemsGenerator);
+        FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
 
         FileWriterFactory mock = mock(FileWriterFactory.class);
         TestWriter testWriter = new TestWriter(true);
@@ -80,9 +86,8 @@ public class TransactionGeneratorHandlerTest {
         } catch (IOException e) {
             assertTrue("IOException shouldn't be thrown", false);
         }
-
-        TransactionWriter transactionWriter = new TransactionWriter(Paths.get("/"), mock);
-        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, transactionWriter, 100);
+        FileWriter fileWriter = new FileWriter(Paths.get("/"), mock, fileFormatWriter);
+        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, fileWriter, 100);
 
         try {
             // when
