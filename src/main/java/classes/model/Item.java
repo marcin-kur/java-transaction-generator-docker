@@ -1,4 +1,4 @@
-package classes.generators;
+package classes.model;
 
 import lombok.Getter;
 import lombok.ToString;

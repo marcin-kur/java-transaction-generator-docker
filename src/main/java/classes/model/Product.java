@@ -1,4 +1,4 @@
-package classes.input_parameters;
+package classes.model;
 
 import java.math.BigDecimal;
 

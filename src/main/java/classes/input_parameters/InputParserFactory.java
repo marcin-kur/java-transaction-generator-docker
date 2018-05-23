@@ -1,12 +1,24 @@
 package classes.input_parameters;
 
-public interface InputParserFactory {
+import classes.parsers.IntegerParser;
+import classes.parsers.IntegerRangeParser;
+import classes.parsers.TimestampRangeParser;
 
-    InputIntegerParser createIntegerParser();
+public class InputParserFactory {
 
-    InputIntegerRangeParser createIntegerRangeParser();
+    public IntegerParser createIntegerParser() {
+        return new IntegerParser();
+    }
 
-    InputPathParser createPathParser();
+    public IntegerRangeParser createIntegerRangeParser() {
+        return new IntegerRangeParser();
+    }
 
-    InputTimestampRangeParser createTimestampRangeParser();
+    public InputPathParser createPathParser() {
+        return new InputPathParser();
+    }
+
+    public TimestampRangeParser createTimestampRangeParser() {
+        return new TimestampRangeParser();
+    }
 }

@@ -1,6 +1,8 @@
 package classes.input_parameters;
 
 import classes.file_factories.FileReaderFactory;
+import classes.model.Product;
+import classes.parsers.ParseException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class ProductReaderTest {
 
             //then
             assertTrue("InputParsException should be thrown", false);
-        } catch (InputParseException e) {
+        } catch (ParseException e) {
             assertTrue("InputParsException should be thrown", true);
         }
     }
@@ -87,7 +89,7 @@ public class ProductReaderTest {
 
             //then
             assertTrue("InputParsException should be thrown", false);
-        } catch (InputParseException e) {
+        } catch (ParseException e) {
             assertTrue("InputParsException should be thrown", true);
         }
     }
@@ -110,9 +112,9 @@ public class ProductReaderTest {
             ArrayList<Product> products = productsReader.readProducts(path);
 
             //then
-            assertTrue("InputParseException should be thrown", false);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException should be thrown", true);
+            assertTrue("ParseException should be thrown", false);
+        } catch (ParseException e) {
+            assertTrue("ParseException should be thrown", true);
         }
     }
 
@@ -135,9 +137,9 @@ public class ProductReaderTest {
             ArrayList<Product> products = productsReader.readProducts(path);
 
             // then
-            assertTrue("InputParseException should be thrown", false);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException should be thrown", true);
+            assertTrue("ParseException should be thrown", false);
+        } catch (ParseException e) {
+            assertTrue("ParseException should be thrown", true);
         }
     }
 
@@ -162,7 +164,7 @@ public class ProductReaderTest {
 
             //then
             assertTrue("InputParsException should be thrown", false);
-        } catch (InputParseException e) {
+        } catch (ParseException e) {
             assertTrue("InputParsException should be thrown", true);
         }
     }

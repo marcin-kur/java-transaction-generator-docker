@@ -1,7 +1,8 @@
 package classes.generators;
 
 import classes.TestUtils;
-import classes.input_parameters.Product;
+import classes.model.Product;
+import classes.model.Transaction;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -24,11 +25,11 @@ public class TransactionGeneratorTest {
                 new Product("p2", new BigDecimal(2)),
                 new Product("p3", new BigDecimal(3))
         ));
-        IntegerGenerator itemCountGenerator = new IntegerGenerator(new IntegerRange(100, 150));
-        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new IntegerRange(5, 10));
+        IntegerGenerator itemCountGenerator = new IntegerGenerator(new Range<>(100, 150));
+        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new Range<>(5, 10));
         ItemsGenerator itemsGenerator = new ItemsGenerator(itemCountGenerator, itemQuantityGenerator, products);
-        IntegerGenerator customerIdGenerator = new IntegerGenerator(new IntegerRange(50, 100));
-        TimestampGenerator timestampGenerator = new TimestampGenerator(new TimestampRange(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
+        IntegerGenerator customerIdGenerator = new IntegerGenerator(new Range<>(50, 100));
+        TimestampGenerator timestampGenerator = new TimestampGenerator(new Range<>(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
 
         TransactionGenerator transactionGenerator = new TransactionGenerator(customerIdGenerator, timestampGenerator, itemsGenerator);
 

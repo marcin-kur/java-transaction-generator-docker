@@ -1,5 +1,7 @@
 package classes.generators;
 
+import classes.model.Transaction;
+
 public class TransactionGenerator {
 
     private final IntegerGenerator customerIdGenerator;

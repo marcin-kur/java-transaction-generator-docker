@@ -1,8 +1,8 @@
 package classes.writers;
 
 import classes.file_factories.FileWriterFactory;
-import classes.generators.Item;
-import classes.generators.Transaction;
+import classes.model.Item;
+import classes.model.Transaction;
 import classes.input_parameters.FileFormat;
 import org.junit.Test;
 

@@ -1,7 +1,8 @@
 package classes.input_parameters;
 
 import classes.TestUtils;
-import classes.command_line.CommandLineArgs;
+import classes.properties.Properties;
+import classes.parsers.ParseException;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -22,7 +23,7 @@ public class InputParameterCreatorTest {
     @Test
     public void shouldCreateInputParametersFromCommandLineArgs() {
         // given
-        CommandLineArgs commandLineArgs = new CommandLineArgs(
+        Properties properties = new Properties(
                 "1:5",
                 "2018-03-01T00:00:00.000-0100:2018-03-01T23:59:59.999-0100",
                 "items.csv",
@@ -38,7 +39,7 @@ public class InputParameterCreatorTest {
         when(pathParser.parseFile(any(String.class))).thenCallRealMethod();
         when(pathParser.parseDirectory(any(String.class))).thenCallRealMethod();
 
-        InputParserFactoryImpl inputParserFactory = mock(InputParserFactoryImpl.class);
+        InputParserFactory inputParserFactory = mock(InputParserFactory.class);
         when(inputParserFactory.createIntegerParser()).thenCallRealMethod();
         when(inputParserFactory.createIntegerRangeParser()).thenCallRealMethod();
         when(inputParserFactory.createTimestampRangeParser()).thenCallRealMethod();
@@ -48,11 +49,11 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(commandLineArgs);
+            InputParameters inputParameters = inputParametersCreator.create(properties);
 
             //then
-            assertEquals(inputParameters.getCustomerIds().getLowerLimit(), 1);
-            assertEquals(inputParameters.getCustomerIds().getUpperLimit(), 5);
+            assertEquals((int) inputParameters.getCustomerIds().getLowerLimit(), 1);
+            assertEquals((int) inputParameters.getCustomerIds().getUpperLimit(), 5);
 
             ZonedDateTime beginOfDay = ZonedDateTime.of(2018, 3, 1, 0, 0, 0, 0, ZoneId.of("-01:00"));
             assertEquals(inputParameters.getDateRange().getLowerLimit(), beginOfDay);
@@ -60,26 +61,26 @@ public class InputParameterCreatorTest {
 
             assertEquals(inputParameters.getItemsFile(), Paths.get("items.csv"));
 
-            assertEquals(inputParameters.getItemsCount().getLowerLimit(), 5);
-            assertEquals(inputParameters.getItemsCount().getUpperLimit(), 10);
+            assertEquals((int) inputParameters.getItemsCount().getLowerLimit(), 5);
+            assertEquals((int) inputParameters.getItemsCount().getUpperLimit(), 10);
 
-            assertEquals(inputParameters.getItemsQuantity().getLowerLimit(), 1);
-            assertEquals(inputParameters.getItemsQuantity().getUpperLimit(), 5);
+            assertEquals((int) inputParameters.getItemsQuantity().getLowerLimit(), 1);
+            assertEquals((int) inputParameters.getItemsQuantity().getUpperLimit(), 5);
 
-            assertEquals(inputParameters.getEventsCount(), 10);
+            assertEquals((int) inputParameters.getEventsCount(), 10);
 
             assertEquals(inputParameters.getOutDir(), Paths.get("./output"));
 
             assertEquals(inputParameters.getOutFormat(), FileFormat.XML);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException shouldn't be thrown:" + e.getMessage(), false);
+        } catch (ParseException e) {
+            assertTrue("ParseException shouldn't be thrown:" + e.getMessage(), false);
         }
     }
 
     @Test
     public void shouldCreateDefaultInputParametersFromEmptyCommandLineArgs() {
         // given
-        CommandLineArgs commandLineArgs = new CommandLineArgs(
+        Properties properties = new Properties(
                 null,
                 null,
                 "items.csv",
@@ -95,7 +96,7 @@ public class InputParameterCreatorTest {
         when(pathParser.parseFile(any(String.class))).thenCallRealMethod();
         when(pathParser.parseDirectory(any(String.class))).thenCallRealMethod();
 
-        InputParserFactoryImpl inputParserFactory = mock(InputParserFactoryImpl.class);
+        InputParserFactory inputParserFactory = mock(InputParserFactory.class);
         when(inputParserFactory.createIntegerParser()).thenCallRealMethod();
         when(inputParserFactory.createIntegerRangeParser()).thenCallRealMethod();
         when(inputParserFactory.createTimestampRangeParser()).thenCallRealMethod();
@@ -105,19 +106,19 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(commandLineArgs);
+            InputParameters inputParameters = inputParametersCreator.create(properties);
 
             //then
             verifyDefaultValues(inputParameters);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException shouldn't be thrown:" + e.getMessage(), false);
+        } catch (ParseException e) {
+            assertTrue("ParseException shouldn't be thrown:" + e.getMessage(), false);
         }
     }
 
     @Test
     public void shouldCreateDefaultInputParametersFromInvalidCommandLineArgs() {
         // given
-        CommandLineArgs commandLineArgs = new CommandLineArgs(
+        Properties properties = new Properties(
                 "a:a",
                 "aaaa-03-01T00:00:00.000-0100:2018-03-01T23:59:59.999-0100",
                 "items.csv",
@@ -133,7 +134,7 @@ public class InputParameterCreatorTest {
         when(pathParser.parseFile(any(String.class))).thenCallRealMethod();
         when(pathParser.parseDirectory(any(String.class))).thenCallRealMethod();
 
-        InputParserFactoryImpl inputParserFactory = mock(InputParserFactoryImpl.class);
+        InputParserFactory inputParserFactory = mock(InputParserFactory.class);
         when(inputParserFactory.createIntegerParser()).thenCallRealMethod();
         when(inputParserFactory.createIntegerRangeParser()).thenCallRealMethod();
         when(inputParserFactory.createTimestampRangeParser()).thenCallRealMethod();
@@ -143,19 +144,19 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(commandLineArgs);
+            InputParameters inputParameters = inputParametersCreator.create(properties);
 
             //then
             verifyDefaultValues(inputParameters);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException shouldn't be thrown:" + e.getMessage(), false);
+        } catch (ParseException e) {
+            assertTrue("ParseException shouldn't be thrown:" + e.getMessage(), false);
         }
     }
 
     @Test
     public void shouldThrowExceptionWhenItemsFileIsEmpty() {
         // given
-        CommandLineArgs commandLineArgs = new CommandLineArgs(
+        Properties properties = new Properties(
                 null,
                 null,
                 null,
@@ -171,7 +172,7 @@ public class InputParameterCreatorTest {
         when(pathParser.parseFile(any(String.class))).thenCallRealMethod();
         when(pathParser.parseDirectory(any(String.class))).thenCallRealMethod();
 
-        InputParserFactoryImpl inputParserFactory = mock(InputParserFactoryImpl.class);
+        InputParserFactory inputParserFactory = mock(InputParserFactory.class);
         when(inputParserFactory.createIntegerParser()).thenCallRealMethod();
         when(inputParserFactory.createIntegerRangeParser()).thenCallRealMethod();
         when(inputParserFactory.createTimestampRangeParser()).thenCallRealMethod();
@@ -181,33 +182,33 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(commandLineArgs);
+            InputParameters inputParameters = inputParametersCreator.create(properties);
 
             //then
-            assertTrue("InputParseException should be thrown", false);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException should be thrown:" + e.getMessage(), true);
+            assertTrue("ParseException should be thrown", false);
+        } catch (ParseException e) {
+            assertTrue("ParseException should be thrown:" + e.getMessage(), true);
         }
     }
 
     private void verifyDefaultValues(InputParameters inputParameters) {
-        assertEquals(inputParameters.getCustomerIds().getLowerLimit(), 1);
-        assertEquals(inputParameters.getCustomerIds().getUpperLimit(), 20);
+        assertEquals((int) inputParameters.getCustomerIds().getLowerLimit(), 1);
+        assertEquals((int) inputParameters.getCustomerIds().getUpperLimit(), 20);
 
         assertEquals(inputParameters.getDateRange().getLowerLimit(), testUtils.getBeginOfToday());
         assertEquals(inputParameters.getDateRange().getUpperLimit(), testUtils.getEndOfToday());
 
         assertEquals(inputParameters.getItemsFile(), Paths.get("items.csv"));
 
-        assertEquals(inputParameters.getItemsCount().getLowerLimit(), 1);
-        assertEquals(inputParameters.getItemsCount().getUpperLimit(), 20);
+        assertEquals((int) inputParameters.getItemsCount().getLowerLimit(), 1);
+        assertEquals((int) inputParameters.getItemsCount().getUpperLimit(), 20);
 
-        assertEquals(inputParameters.getItemsQuantity().getLowerLimit(), 1);
-        assertEquals(inputParameters.getItemsQuantity().getUpperLimit(), 20);
+        assertEquals((int) inputParameters.getItemsQuantity().getLowerLimit(), 1);
+        assertEquals((int) inputParameters.getItemsQuantity().getUpperLimit(), 20);
 
         assertEquals(inputParameters.getEventsCount(), 100);
 
-        assertEquals(inputParameters.getOutDir(), Paths.get(""));
+        assertEquals(inputParameters.getOutDir(), Paths.get("/storage"));
 
         assertEquals(inputParameters.getOutFormat(), FileFormat.JSON);
 

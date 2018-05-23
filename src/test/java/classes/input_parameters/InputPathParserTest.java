@@ -1,5 +1,6 @@
 package classes.input_parameters;
 
+import classes.parsers.ParseException;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -23,9 +24,9 @@ public class InputPathParserTest {
             Path path = mock.parseFile(pathString);
 
             //then
-            assertTrue("InputParseException shouldn't be thrown", true);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException shouldn't be thrown", false);
+            assertTrue("ParseException shouldn't be thrown", true);
+        } catch (ParseException e) {
+            assertTrue("ParseException shouldn't be thrown", false);
         }
     }
 
@@ -42,9 +43,9 @@ public class InputPathParserTest {
             Path path = mock.parseDirectory(pathString);
 
             //then
-            assertTrue("InputParseException shouldn't be thrown", true);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException shouldn't be thrown", false);
+            assertTrue("ParseException shouldn't be thrown", true);
+        } catch (ParseException e) {
+            assertTrue("ParseException shouldn't be thrown", false);
         }
     }
 
@@ -61,9 +62,9 @@ public class InputPathParserTest {
             Path path = mock.parseFile(pathString);
 
             //then
-            assertTrue("InputParseException should be thrown", false);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException should be thrown", true);
+            assertTrue("ParseException should be thrown", false);
+        } catch (ParseException e) {
+            assertTrue("ParseException should be thrown", true);
         }
     }
 
@@ -80,9 +81,9 @@ public class InputPathParserTest {
             Path path = mock.parseDirectory(pathString);
 
             //then
-            assertTrue("InputParseException should be thrown", false);
-        } catch (InputParseException e) {
-            assertTrue("InputParseException should be thrown", true);
+            assertTrue("ParseException should be thrown", false);
+        } catch (ParseException e) {
+            assertTrue("ParseException should be thrown", true);
         }
     }
 }

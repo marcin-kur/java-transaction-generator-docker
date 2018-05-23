@@ -1,6 +1,7 @@
 package classes.generators;
 
-import classes.input_parameters.Product;
+import classes.model.Product;
+import classes.model.Item;
 
 import java.util.ArrayList;
 import java.util.List;

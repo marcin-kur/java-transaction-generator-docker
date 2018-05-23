@@ -1,4 +1,4 @@
-package classes.generators;
+package classes.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

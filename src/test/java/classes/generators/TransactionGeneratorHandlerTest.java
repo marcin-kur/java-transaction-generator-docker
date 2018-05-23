@@ -3,7 +3,7 @@ package classes.generators;
 import classes.TestUtils;
 import classes.file_factories.FileWriterFactory;
 import classes.input_parameters.FileFormat;
-import classes.input_parameters.Product;
+import classes.model.Product;
 import classes.writers.FileFormatWriter;
 import classes.writers.FileWriteException;
 import classes.writers.FileWriter;
@@ -35,11 +35,11 @@ public class TransactionGeneratorHandlerTest {
                 new Product("p2", new BigDecimal(2)),
                 new Product("p3", new BigDecimal(3))
         );
-        IntegerGenerator itemCountGenerator = new IntegerGenerator(new IntegerRange(100, 150));
-        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new IntegerRange(5, 10));
+        IntegerGenerator itemCountGenerator = new IntegerGenerator(new Range<>(100, 150));
+        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new Range<>(5, 10));
         ItemsGenerator itemsGenerator = new ItemsGenerator(itemCountGenerator, itemQuantityGenerator, products);
-        IntegerGenerator customerIdGenerator = new IntegerGenerator(new IntegerRange(50, 100));
-        TimestampGenerator timestampGenerator = new TimestampGenerator(new TimestampRange(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
+        IntegerGenerator customerIdGenerator = new IntegerGenerator(new Range<>(50, 100));
+        TimestampGenerator timestampGenerator = new TimestampGenerator(new Range<>(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
 
         TransactionGenerator transactionGenerator = new TransactionGenerator(customerIdGenerator, timestampGenerator, itemsGenerator);
         FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
@@ -53,10 +53,10 @@ public class TransactionGeneratorHandlerTest {
         }
 
         FileWriter fileWriter = new FileWriter(Paths.get("/"), mock, fileFormatWriter);
-        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, fileWriter, 100);
+        TransactionsGenerator transactionsGenerator = new TransactionsGenerator(transactionGenerator, fileWriter, 100);
 
         // when
-        transactionsGeneratorHandler.handle();
+        transactionsGenerator.generate();
 
         // then
         assertEquals(100, testWriter.count);
@@ -70,11 +70,11 @@ public class TransactionGeneratorHandlerTest {
                 new Product("p2", new BigDecimal(2)),
                 new Product("p3", new BigDecimal(3))
         );
-        IntegerGenerator itemCountGenerator = new IntegerGenerator(new IntegerRange(100, 150));
-        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new IntegerRange(5, 10));
+        IntegerGenerator itemCountGenerator = new IntegerGenerator(new Range<>(100, 150));
+        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new Range<>(5, 10));
         ItemsGenerator itemsGenerator = new ItemsGenerator(itemCountGenerator, itemQuantityGenerator, products);
-        IntegerGenerator customerIdGenerator = new IntegerGenerator(new IntegerRange(50, 100));
-        TimestampGenerator timestampGenerator = new TimestampGenerator(new TimestampRange(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
+        IntegerGenerator customerIdGenerator = new IntegerGenerator(new Range<>(50, 100));
+        TimestampGenerator timestampGenerator = new TimestampGenerator(new Range<>(testUtils.getBeginOfToday(), testUtils.getEndOfToday()));
 
         TransactionGenerator transactionGenerator = new TransactionGenerator(customerIdGenerator, timestampGenerator, itemsGenerator);
         FileFormatWriter fileFormatWriter = FileFormatWriter.getFileFormatWriter(FileFormat.JSON);
@@ -87,11 +87,11 @@ public class TransactionGeneratorHandlerTest {
             assertTrue("IOException shouldn't be thrown", false);
         }
         FileWriter fileWriter = new FileWriter(Paths.get("/"), mock, fileFormatWriter);
-        TransactionsGeneratorHandler transactionsGeneratorHandler = new TransactionsGeneratorHandler(transactionGenerator, fileWriter, 100);
+        TransactionsGenerator transactionsGenerator = new TransactionsGenerator(transactionGenerator, fileWriter, 100);
 
         try {
             // when
-            transactionsGeneratorHandler.handle();
+            transactionsGenerator.generate();
 
             // then
             assertTrue("FileWriteException should be thrown", false);

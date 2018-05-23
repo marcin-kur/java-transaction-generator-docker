@@ -1,6 +1,8 @@
 package classes.input_parameters;
 
 import classes.file_factories.FileReaderFactory;
+import classes.model.Product;
+import classes.parsers.ParseException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -27,13 +29,13 @@ public class ProductsReader {
             return validateProducts(getProducts(lines));
         } catch (IOException | ClassCastException e) {
             log.error("Error during parsing Products. " + e.getMessage());
-            throw new InputParseException(e.getMessage());
+            throw new ParseException(e.getMessage());
         }
     }
 
     private ArrayList<Product> validateProducts(ArrayList<Product> products) {
         if (products.isEmpty()) {
-            throw new InputParseException("There are no valid products");
+            throw new ParseException("There are no valid products");
         }
 
         return products;

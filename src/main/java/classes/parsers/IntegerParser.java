@@ -1,11 +1,11 @@
-package classes.input_parameters;
+package classes.parsers;
 
-public class InputIntegerParser {
+public class IntegerParser {
     public int parse(String valueToParse) {
         try {
             return Integer.valueOf(valueToParse);
         } catch (NumberFormatException e) {
-            throw new InputParseException(e.getMessage());
+            throw new ParseException(e.getMessage());
         }
     }
 }

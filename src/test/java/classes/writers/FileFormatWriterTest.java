@@ -1,7 +1,7 @@
 package classes.writers;
 
-import classes.generators.Item;
-import classes.generators.Transaction;
+import classes.model.Item;
+import classes.model.Transaction;
 import classes.input_parameters.FileFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;

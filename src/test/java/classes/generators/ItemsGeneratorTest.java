@@ -1,6 +1,7 @@
 package classes.generators;
 
-import classes.input_parameters.Product;
+import classes.model.Product;
+import classes.model.Item;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -19,8 +20,8 @@ public class ItemsGeneratorTest {
                 new Product("p2", new BigDecimal(2)),
                 new Product("p3", new BigDecimal(3))
         ));
-        IntegerGenerator itemCountGenerator = new IntegerGenerator(new IntegerRange(100, 150));
-        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new IntegerRange(5, 10));
+        IntegerGenerator itemCountGenerator = new IntegerGenerator(new Range<>(100, 150));
+        IntegerGenerator itemQuantityGenerator = new IntegerGenerator(new Range<>(5, 10));
         ItemsGenerator itemsGenerator = new ItemsGenerator(itemCountGenerator, itemQuantityGenerator, products);
 
         //when

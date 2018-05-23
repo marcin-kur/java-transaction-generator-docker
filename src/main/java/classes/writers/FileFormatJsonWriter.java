@@ -1,6 +1,6 @@
 package classes.writers;
 
-import classes.generators.Transaction;
+import classes.model.Transaction;
 import classes.input_parameters.FileFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
