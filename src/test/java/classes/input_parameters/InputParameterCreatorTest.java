@@ -1,7 +1,7 @@
 package classes.input_parameters;
 
 import classes.TestUtils;
-import classes.properties.Properties;
+import classes.properties.AppProperties;
 import classes.parsers.ParseException;
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class InputParameterCreatorTest {
     @Test
     public void shouldCreateInputParametersFromCommandLineArgs() {
         // given
-        Properties properties = new Properties(
+        AppProperties appProperties = new AppProperties(
                 "1:5",
                 "2018-03-01T00:00:00.000-0100:2018-03-01T23:59:59.999-0100",
                 "items.csv",
@@ -49,7 +49,7 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(properties);
+            InputParameters inputParameters = inputParametersCreator.create(appProperties);
 
             //then
             assertEquals((int) inputParameters.getCustomerIds().getLowerLimit(), 1);
@@ -80,7 +80,7 @@ public class InputParameterCreatorTest {
     @Test
     public void shouldCreateDefaultInputParametersFromEmptyCommandLineArgs() {
         // given
-        Properties properties = new Properties(
+        AppProperties appProperties = new AppProperties(
                 null,
                 null,
                 "items.csv",
@@ -106,7 +106,7 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(properties);
+            InputParameters inputParameters = inputParametersCreator.create(appProperties);
 
             //then
             verifyDefaultValues(inputParameters);
@@ -118,7 +118,7 @@ public class InputParameterCreatorTest {
     @Test
     public void shouldCreateDefaultInputParametersFromInvalidCommandLineArgs() {
         // given
-        Properties properties = new Properties(
+        AppProperties appProperties = new AppProperties(
                 "a:a",
                 "aaaa-03-01T00:00:00.000-0100:2018-03-01T23:59:59.999-0100",
                 "items.csv",
@@ -144,7 +144,7 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(properties);
+            InputParameters inputParameters = inputParametersCreator.create(appProperties);
 
             //then
             verifyDefaultValues(inputParameters);
@@ -156,7 +156,7 @@ public class InputParameterCreatorTest {
     @Test
     public void shouldThrowExceptionWhenItemsFileIsEmpty() {
         // given
-        Properties properties = new Properties(
+        AppProperties appProperties = new AppProperties(
                 null,
                 null,
                 null,
@@ -182,7 +182,7 @@ public class InputParameterCreatorTest {
 
         try {
             //when
-            InputParameters inputParameters = inputParametersCreator.create(properties);
+            InputParameters inputParameters = inputParametersCreator.create(appProperties);
 
             //then
             assertTrue("ParseException should be thrown", false);

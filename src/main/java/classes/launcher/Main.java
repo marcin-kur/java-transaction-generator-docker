@@ -1,6 +1,6 @@
 package classes.launcher;
 
-import classes.properties.Properties;
+import classes.properties.AppProperties;
 import classes.file_factories.FileReaderFactory;
 import classes.file_factories.FileWriterFactory;
 import classes.generators.*;
@@ -20,11 +20,11 @@ public class Main {
         log.info("Application started...");
 
         PropertiesReader propertiesReader = new PropertiesReader();
-        Properties properties = propertiesReader.readProperties();
+        AppProperties appProperties = propertiesReader.readProperties();
 
         InputParserFactory inputParserFactory = new InputParserFactory();
         InputParametersCreator inputParametersCreator = new InputParametersCreator(inputParserFactory);
-        InputParameters inputParameters = inputParametersCreator.create(properties);
+        InputParameters inputParameters = inputParametersCreator.create(appProperties);
 
         ProductsReader productsReader = new ProductsReader(new FileReaderFactory());
         List<Product> products = productsReader.readProducts(inputParameters.getItemsFile());

@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
-public class Properties {
+public class AppProperties {
     private final String customerIds;
     private final String dateRange;
     private final String itemsFile;

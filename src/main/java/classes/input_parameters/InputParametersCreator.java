@@ -1,6 +1,6 @@
 package classes.input_parameters;
 
-import classes.properties.Properties;
+import classes.properties.AppProperties;
 import classes.generators.Range;
 import classes.parsers.ParseException;
 import classes.parsers.IntegerParser;
@@ -28,18 +28,18 @@ public class InputParametersCreator {
         this.pathParser = inputParserFactory.createPathParser();
     }
 
-    public InputParameters create(Properties properties) {
-        log.info("Input Parameters creation started.", properties);
+    public InputParameters create(AppProperties appProperties) {
+        log.info("Input Parameters creation started.", appProperties);
         InputParametersBuilder inputParametersBuilder = new InputParametersBuilder();
 
-        setCustomerIds(inputParametersBuilder, properties.getCustomerIds());
-        setDateRange(inputParametersBuilder, properties.getDateRange());
-        setItemsFile(inputParametersBuilder, properties.getItemsFile());
-        setItemsCount(inputParametersBuilder, properties.getItemsCount());
-        setItemsQuantity(inputParametersBuilder, properties.getItemsQuantity());
-        setEventsCount(inputParametersBuilder, properties.getEventsCount());
-        setOutDir(inputParametersBuilder, properties.getOutDir());
-        setOutFormat(inputParametersBuilder, properties.getFormat());
+        setCustomerIds(inputParametersBuilder, appProperties.getCustomerIds());
+        setDateRange(inputParametersBuilder, appProperties.getDateRange());
+        setItemsFile(inputParametersBuilder, appProperties.getItemsFile());
+        setItemsCount(inputParametersBuilder, appProperties.getItemsCount());
+        setItemsQuantity(inputParametersBuilder, appProperties.getItemsQuantity());
+        setEventsCount(inputParametersBuilder, appProperties.getEventsCount());
+        setOutDir(inputParametersBuilder, appProperties.getOutDir());
+        setOutFormat(inputParametersBuilder, appProperties.getFormat());
 
         return inputParametersBuilder.createInputParameters();
     }
